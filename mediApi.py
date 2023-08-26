@@ -1,12 +1,12 @@
 from medisearch_client import MediSearchClient
 from databaseManager import Manager
-import requests
+import requests, re
 
 
 class MediSearch:
     # Initialise the MediSearch client
     def __init__(self):
-        self.client = MediSearchClient(api_key="1DB9Yw5rHk8dQhIG5CtR")
+        self.client = MediSearchClient(api_key="API_KEY")
         self.manager = Manager()
 
     # Makes the API call to MediSearch
@@ -20,23 +20,25 @@ class MediSearch:
         for response in responses:
             try:
                 return response["text"]
-            except:
+            except Exception:
                 return f"\nSources:\n{response['articles'][0]['title']}: {response['articles'][0]['url']}"  # type: ignore
 
     # Private Method to generate the context query for the AI.
     # This and the answer the AI will give to the context needs to be filtered out in either frontend or backend
     def __generateQuery__(self, patient_data, additional_info):
-        query = patient_data + " " + additional_info + " " + "Medical knowledge: low"
+        query = f"{patient_data} {additional_info} Medical knowledge: low"
         return str(query)
+
+    def __remove_sources__(self, response):
+        return re.sub(r"\[\d+(,\s*\d+)*\]", "", response)
 
     def __request_patient_data__(self, patient_id):
         # make an api call to "https://health-brain-922fa718a7c7.herokuapp.com/doctor/patient/:id" to get the patient data
-        url = (
-            "https://health-brain-922fa718a7c7.herokuapp.com/doctor/patient/"
-            + patient_id
-        )
-        response = str(requests.get(url))
-        return response
+        url = "https://health-brain-922fa718a7c7.herokuapp.com/auth/api/profile/"
+
+        headers = {"Authorization": f"Bearer {patient_id}"}
+
+        return str(requests.get(url, headers=headers).json())
 
     # Public method to ask the AI a question
     def ask(self, question, patient_id, additional_info=""):
@@ -47,7 +49,8 @@ class MediSearch:
             query = self.__generateQuery__(patient_data, additional_info)
             self.manager.add_message(patient_id, question)
             self.manager.add_message(
-                patient_id, self.__askAI__([query + " " + question])
+                patient_id,
+                self.__remove_sources__(self.__askAI__([f"{query} {question}"])),
             )
         else:
             self.manager.add_message(patient_id, question)
