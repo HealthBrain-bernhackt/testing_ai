@@ -28,8 +28,9 @@ class MediSearch:
             "patient_data": {
                 "age": patient_data["age"],
                 "gender": patient_data["gender"],
-                "medical_history": patient_data["medical_history"],
+                "preconditions": patient_data["preconditions"],
                 "current_medications": patient_data["current_medications"],
+                "allergies": patient_data["allergies"],
                 "medical_knowledge": "low",
             },
             "additional_info": additional_info,
