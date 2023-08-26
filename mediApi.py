@@ -56,8 +56,6 @@ class MediSearch:
             return (
                 "Oh snap! You don't seem to be logged in. Please log in and try again."
             )
-        elif error_code == "[Errno 11001] getaddrinfo failed":
-            return "Oh snap! You seem to be offline. Check your internet connection and try again."
         elif error_code == "error_auth":
             return "Oh snap! Some developer messed up the API key. Please contact the developers."
         elif error_code == "error_internal":
@@ -69,7 +67,7 @@ class MediSearch:
         elif error_code in ["error_not_enough_articles", "error_out_of_tokens"]:
             return "Oh snap! You overwhelmed our AI. Please close the chat and open it again."
         else:
-            return "Oh snap! Something went wrong. Please try again and if the problem persists, contact the developers."
+            return f"Oh snap! Something went wrong. Please try again and if the problem persists, contact the developers.\n{error_code}"
 
     # Public method to ask the AI a question
     def ask(self, question, patient_id, additional_info=""):
