@@ -33,7 +33,7 @@ class MediSearch:
         return re.sub(r"\s?\[\d+(,\s*\d+)*\]", "", response)
 
     def __request_patient_data__(self, patient_id):
-        # make an api call to "https://health-brain-922fa718a7c7.herokuapp.com/doctor/patient/:id" to get the patient data
+        # make an api call to get the patient data
         url = "https://health-brain-922fa718a7c7.herokuapp.com/auth/api/profile/"
 
         headers = {"Authorization": f"Bearer {patient_id}"}
