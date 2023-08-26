@@ -1,5 +1,6 @@
 from medisearch_client import MediSearchClient
 from databaseManager import Manager
+import requests
 
 
 class MediSearch:
@@ -25,24 +26,21 @@ class MediSearch:
     # Private Method to generate the context query for the AI.
     # This and the answer the AI will give to the context needs to be filtered out in either frontend or backend
     def __generateQuery__(self, patient_data, additional_info):
-        query = {
-            "patient_data": {
-                "age": patient_data["age"],
-                "gender": patient_data["gender"],
-                "preconditions": patient_data["preconditions"],
-                "current_medications": patient_data["current_medications"],
-                "allergies": patient_data["allergies"],
-                "medical_knowledge": "low",
-            },
-            "additional_info": additional_info,
-        }
+        query = patient_data + " " + additional_info + " " + "Medical knowledge: low"
         return str(query)
+    
+    def __request_patient_data__(self, patient_id):
+        # make an api call to "https://health-brain-922fa718a7c7.herokuapp.com/doctor/patient/:id" to get the patient data
+        url = "https://health-brain-922fa718a7c7.herokuapp.com/doctor/patient/" + patient_id
+        response = str(requests.get(url))
+        return response
 
     # Public method to ask the AI a question
-    def ask(self, question, patient_id, patient_data=[], additional_info=""):
+    def ask(self, question, patient_id, additional_info=""):
         # If the chat does not exist, create it and ask the question with the patient data
         if not self.manager.chat_exists(patient_id):
             self.manager.init_chat(patient_id)
+            patient_data = self.__request_patient_data__(patient_id)
             query = self.__generateQuery__(patient_data, additional_info)
             self.manager.add_message(patient_id, question)
             self.manager.add_message(
