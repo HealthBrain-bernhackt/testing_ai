@@ -21,7 +21,20 @@ class MediSearch:
             try:
                 return response["text"]
             except Exception:
-                return f"\nSources:\n{response['articles'][0]['title']}: {response['articles'][0]['url']}"  # type: ignore
+                if response["error_code"] == "error_auth":
+                    return "Oh snap! Some developer messed up the API key. Please contact the developers."
+                elif response["error_code"] == "error_missing_key":
+                    return "Oh snap! Some developer forgot the API key. Please contact the developers."
+                elif response["error_code"] == "error_internal":
+                    return "Oh snap! Some developer messed up the backend. Please contact the developers."
+                elif response["error_code"] == "error_llm":
+                    return "Oh snap! Some developer messed up the AI. Please contact the developers."
+                elif response["error_code"] == "error_not_enough_articles":
+                    return "Oh snap! You overwhelmed our AI. Please close the chat and open it again."
+                elif response["error_code"] == "error_out_of_tokens":
+                    return "Oh snap! You overwhelmed our AI. Please close the chat and open it again."
+                else:
+                    return "Oh snap! Something went wrong. Please try again and if the problem persists contact the developers."
 
     # Private Method to generate the context query for the AI.
     # This and the answer the AI will give to the context needs to be filtered out in either frontend or backend
