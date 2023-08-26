@@ -68,7 +68,7 @@ class MediSearch:
         elif error_code in {"error_not_enough_articles", "error_out_of_tokens"}:
             return "Oh snap! You overwhelmed our AI. Please close the chat and open it again."
         else:
-            return f"Oh snap! Something went wrong. Please try again and if the problem persists, contact the developers."
+            return "Oh snap! Something went wrong. Please try again and if the problem persists, contact the developers."
 
     # Public method to ask the AI a question
     def ask(self, question, patient_id, additional_info=""):
