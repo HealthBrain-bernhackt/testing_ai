@@ -50,3 +50,6 @@ class MediSearch:
 
     def get_whole(self):
         return self.manager.chats
+    
+    def end_chat(self, patient_id):
+        self.manager.remove_chat(patient_id)
