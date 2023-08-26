@@ -47,9 +47,6 @@ class MediSearch:
         query = self.__generateQuery__(patient_data, additional_info)
         self.manager.add_message(patient_id, self.__askAI__([query]))
         return self.manager.get_latest_message(patient_id)
-
-    def get_whole(self):
-        return self.manager.chats
     
     def end_chat(self, patient_id):
         self.manager.remove_chat(patient_id)
