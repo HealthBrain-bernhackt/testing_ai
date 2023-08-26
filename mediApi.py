@@ -6,7 +6,7 @@ import requests, re
 class MediSearch:
     # Initialise the MediSearch client
     def __init__(self):
-        self.client = MediSearchClient(api_key="API_KEY")
+        self.client = MediSearchClient(api_key="1DB9Yw5rHk8dQhIG5CtR")
         self.manager = Manager()
 
     # Makes the API call to MediSearch
@@ -30,7 +30,7 @@ class MediSearch:
         return str(query)
 
     def __remove_sources__(self, response):
-        return re.sub(r"\[\d+(,\s*\d+)*\]", "", response)
+        return re.sub(r"\s?\[\d+(,\s*\d+)*\]", "", response)
 
     def __request_patient_data__(self, patient_id):
         # make an api call to "https://health-brain-922fa718a7c7.herokuapp.com/doctor/patient/:id" to get the patient data
