@@ -1,6 +1,7 @@
 from medisearch_client import MediSearchClient
 from databaseManager import Manager
 
+
 class MediSearch:
     # Initialise the MediSearch client
     def __init__(self):
@@ -39,15 +40,20 @@ class MediSearch:
 
     # Public method to ask the AI a question
     def ask(self, question, patient_id, patient_data=[], additional_info=""):
+        # If the chat does not exist, create it and ask the question with the patient data
         if not self.manager.chat_exists(patient_id):
             self.manager.init_chat(patient_id)
             query = self.__generateQuery__(patient_data, additional_info)
             self.manager.add_message(patient_id, question)
-            self.manager.add_message(patient_id, self.__askAI__([query+" "+question]))
+            self.manager.add_message(
+                patient_id, self.__askAI__([query + " " + question])
+            )
         else:
             self.manager.add_message(patient_id, question)
-            self.manager.add_message(patient_id, self.__askAI__(self.manager.get_chat(patient_id)))
+            self.manager.add_message(
+                patient_id, self.__askAI__(self.manager.get_chat(patient_id))
+            )
         return self.manager.get_latest_message(patient_id)
-     
+
     def end_chat(self, patient_id):
         self.manager.remove_chat(patient_id)
