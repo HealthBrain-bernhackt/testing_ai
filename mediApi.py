@@ -28,10 +28,13 @@ class MediSearch:
     def __generateQuery__(self, patient_data, additional_info):
         query = patient_data + " " + additional_info + " " + "Medical knowledge: low"
         return str(query)
-    
+
     def __request_patient_data__(self, patient_id):
         # make an api call to "https://health-brain-922fa718a7c7.herokuapp.com/doctor/patient/:id" to get the patient data
-        url = "https://health-brain-922fa718a7c7.herokuapp.com/doctor/patient/" + patient_id
+        url = (
+            "https://health-brain-922fa718a7c7.herokuapp.com/doctor/patient/"
+            + patient_id
+        )
         response = str(requests.get(url))
         return response
 

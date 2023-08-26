@@ -16,6 +16,6 @@ class Manager:
 
     def chat_exists(self, patient_id):
         return patient_id in self.chats
-    
+
     def get_latest_message(self, patient_id):
         return self.chats[patient_id][-1]
