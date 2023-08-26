@@ -6,7 +6,7 @@ import requests, re
 class MediSearch:
     # Initialise the MediSearch client
     def __init__(self):
-        self.client = MediSearchClient(api_key="")
+        self.client = MediSearchClient(api_key="1DB9Yw5rHk8dQhIG5CtR")
         self.manager = Manager()
 
     # Makes the API call to MediSearch
@@ -44,7 +44,7 @@ class MediSearch:
 
         headers = {"Authorization": f"Bearer {patient_id}"}
 
-        response = str(requests.get(url, headers=headers))
+        response = str(requests.get(url, headers=headers).json())
 
         if "age" not in response:
             return self.__error_handler__("Token not valid")
@@ -53,6 +53,7 @@ class MediSearch:
 
     def __error_handler__(self, error_code):
         error_code = str(error_code)
+        print(error_code)
         if error_code == "Token not valid":
             return (
                 "Oh snap! You don't seem to be logged in. Please log in and try again."
