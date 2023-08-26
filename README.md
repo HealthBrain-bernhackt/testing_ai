@@ -1,6 +1,4 @@
 # Backend
-## mediApi
-The mediApi is a library which manages user interaction to the MediSearch API. It is written in Python and uses the requests library to make HTTP requests to the API. 
+Das backend ist in Python geschrieben. MediApi.py organisiert den AI Chat der app. Der databaseManager.py unterstützt dies, indem er die aktiven chats speichert. Sobald ein chat geschlossen wird, wird auch der Chat verlauf gelöscht.
 
-## databaseManager
-The databaseManager is the library used to manage active chats in the HealthBrain app. 
+Als Verbindungspunkt von backend zu Frontend benutzen wir Django. Das DjangoRestFramework bietet eine simple Schnittstelle um die beiden Welten zu verbinden.
