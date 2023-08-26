@@ -35,19 +35,19 @@ class MediSearch:
             },
             "additional_info": additional_info,
         }
-        return str(query) + ". Introduce yourself."
+        return str(query)
 
     # Public method to ask the AI a question
-    def ask(self, question, patient_id):
-        self.manager.add_message(patient_id, question)
-        self.manager.add_message(patient_id, self.__askAI__(self.manager.get_chat(patient_id)))
+    def ask(self, question, patient_id, patient_data=[], additional_info=""):
+        if not self.manager.chat_exists(patient_id):
+            self.manager.init_chat(patient_id)
+            query = self.__generateQuery__(patient_data, additional_info)
+            self.manager.add_message(patient_id, question)
+            self.manager.add_message(patient_id, self.__askAI__([query+" "+question]))
+        else:
+            self.manager.add_message(patient_id, question)
+            self.manager.add_message(patient_id, self.__askAI__(self.manager.get_chat(patient_id)))
         return self.manager.get_latest_message(patient_id)
-    
-    def initialise_chat(self, patient_id, patient_data={}, additional_info=""):
-        self.manager.init_chat(patient_id)
-        query = self.__generateQuery__(patient_data, additional_info)
-        self.manager.add_message(patient_id, self.__askAI__([query]))
-        return self.manager.get_latest_message(patient_id)
-    
+     
     def end_chat(self, patient_id):
         self.manager.remove_chat(patient_id)
