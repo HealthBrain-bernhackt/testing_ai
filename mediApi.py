@@ -57,8 +57,6 @@ class MediSearch:
             return (
                 "Oh snap! You don't seem to be logged in. Please log in and try again."
             )
-        elif error_code == "Connection to remote host was lost.":
-            return "Oh snap! You seem to have lost your internet connection. Please reconnect and try again."
         elif error_code == "error_auth":
             return "Oh snap! Some developer messed up the API key. Please contact the developers."
         elif error_code == "error_internal":
